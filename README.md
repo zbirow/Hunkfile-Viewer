@@ -5,4 +5,4 @@ In progress.....
 Hunkfile Viewer (.hnk)
 
 #Credits
-hunkfile<https://github.com/desuex/hunkfile> - HNK Structure
+<https://github.com/desuex/hunkfile> - HNK Structure

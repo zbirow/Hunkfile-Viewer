@@ -5,6 +5,7 @@ import struct
 import io
 from PIL import Image, ImageTk
 import numpy as np
+import os
 
 # Define record type constants
 RECORD_TYPE_FILENAME = 0x40071
@@ -78,6 +79,61 @@ class HunkfileViewer:
         self.textures = {} # Dictionary to store texture metadata and data
 
         self.create_widgets()
+        self.setup_context_menu()
+
+    def setup_context_menu(self):
+        """Create the context menu for tree items"""
+        self.context_menu = tk.Menu(self.root, tearoff=0)
+        self.context_menu.add_command(label="Extract to .dat file", command=self.extract_selected_record)
+        
+        # Bind right-click event to show context menu
+        self.tree.bind("<Button-3>", self.show_context_menu)
+
+    def show_context_menu(self, event):
+        """Show context menu on right-click"""
+        item = self.tree.identify_row(event.y)
+        if item:
+            self.tree.selection_set(item)
+            self.context_menu.post(event.x_root, event.y_root)
+
+    def extract_selected_record(self):
+        """Extract the selected record's data to a .dat file"""
+        selection = self.tree.selection()
+        if not selection:
+            return
+        
+        try:
+            record_index = int(selection[0])
+            _record_size, record_type, record_data, record_pos = self.records[record_index]
+        except (ValueError, IndexError):
+            messagebox.showerror("Error", "Could not retrieve record data for extraction.")
+            return
+
+        # Suggest a default filename based on record type and position
+        default_filename = f"record_0x{record_type:08X}_at_{record_pos}.dat"
+        
+        # If it's a filename record, use the actual filename
+        if record_type == RECORD_TYPE_FILENAME:
+            folder, filename = self.parse_filename_header(record_data)
+            if filename:
+                default_filename = filename + ".dat"
+
+        # Ask user for output file path
+        output_path = filedialog.asksaveasfilename(
+            title="Save Record Data",
+            initialfile=default_filename,
+            defaultextension=".dat",
+            filetypes=(("DAT files", "*.dat"), ("All files", "*.*"))
+        )
+        if not output_path:
+            return  # User cancelled
+
+        try:
+            with open(output_path, 'wb') as f:
+                f.write(record_data)
+            messagebox.showinfo("Success", f"Record data successfully extracted to:\n{output_path}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save record data:\n{str(e)}")
 
     def create_widgets(self):
         # Main container with a sash (PanedWindow) for resizable panels
@@ -141,7 +197,7 @@ class HunkfileViewer:
             return
 
         self.current_file = file_path
-        self.root.title(f"Hunkfile Viewer - {file_path.split('/')[-1]}")
+        self.root.title(f"Hunkfile Viewer - {os.path.basename(file_path)}")
 
         try:
             parsed_records = self.read_hunkfile(file_path)
@@ -199,15 +255,21 @@ class HunkfileViewer:
         HEADER_MIN_LENGTH = 0x16
 
         if len(data) >= HEADER_MIN_LENGTH:
-            width = struct.unpack('>H', data[OFFSET_WIDTH:OFFSET_WIDTH+2])[0]  # Changed to big-endian
-            height = struct.unpack('>H', data[OFFSET_HEIGHT:OFFSET_HEIGHT+2])[0]  # Changed to big-endian
+            # Check magic bytes at the beginning of the header
+            magic = data[:2]
+            if magic == b'\xA1\xBC':
+                texture_format = "CRMP"
+            elif magic == b'\xE9\x78':
+                texture_format = "Unknown (but showing as CRMP)"
+            else:
+                texture_format = f"Unknown (magic: {magic.hex().upper()})"
             
-            # Always return CRMP format for Wii textures
-            texture_format = "CRMP"
+            width = struct.unpack('>H', data[OFFSET_WIDTH:OFFSET_WIDTH+2])[0]
+            height = struct.unpack('>H', data[OFFSET_HEIGHT:OFFSET_HEIGHT+2])[0]
             
             return width, height, texture_format
         
-        return 0, 0, "CRMP"
+        return 0, 0, "Unknown"
 
     def decode_crmp_texture(self, data, width, height):
         """Decodes CRMP texture using WiiTextureDecoder."""
@@ -240,8 +302,12 @@ class HunkfileViewer:
             self.canvas.create_text(50, 50, text="Invalid texture dimensions (0x0).", fill="orange")
             return False
 
+        # Add format information at the top of the preview
+        format_text = f"Format: {texture_format} | Dimensions: {width}x{height}"
+        self.canvas.create_text(10, 10, text=format_text, anchor=tk.NW, fill="black")
+
         try:
-            # Decode CRMP texture
+            # Decode CRMP texture regardless of the reported format
             img = self.decode_crmp_texture(texture_data, width, height)
             if img is None:
                 raise ValueError("Failed to decode CRMP texture")

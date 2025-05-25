@@ -4,5 +4,5 @@ Can dispaly Texture
 In progress.....
 Hunkfile Viewer (.hnk)
 
-#Credits
+# Credits
 <https://github.com/desuex/hunkfile> - HNK Structure

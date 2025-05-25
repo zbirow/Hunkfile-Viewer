@@ -194,13 +194,13 @@ class HunkfileViewer:
 
     def parse_41150_header(self, data):
         """Parses a texture header record (type 0x41150)."""
-        OFFSET_WIDTH = 0x0B  # Wii
-        OFFSET_HEIGHT = 0x0D  # Wii
-        HEADER_MIN_LENGTH = 0x10
+        OFFSET_WIDTH = 0x0C  # Wii
+        OFFSET_HEIGHT = 0x0E  # Wii
+        HEADER_MIN_LENGTH = 0x16
 
         if len(data) >= HEADER_MIN_LENGTH:
-            width = struct.unpack('<H', data[OFFSET_WIDTH:OFFSET_WIDTH+2])[0]
-            height = struct.unpack('<H', data[OFFSET_HEIGHT:OFFSET_HEIGHT+2])[0]
+            width = struct.unpack('>H', data[OFFSET_WIDTH:OFFSET_WIDTH+2])[0]  # Changed to big-endian
+            height = struct.unpack('>H', data[OFFSET_HEIGHT:OFFSET_HEIGHT+2])[0]  # Changed to big-endian
             
             # Always return CRMP format for Wii textures
             texture_format = "CRMP"

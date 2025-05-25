@@ -23,6 +23,8 @@ class HunkfileViewer:
         self.textures = {} # Dictionary to store texture metadata and data, keyed by a generated ID
 
         self.create_widgets()
+        self.context_menu = tk.Menu(self.root, tearoff=0)
+        self.context_menu.add_command(label="Export to .dat", command=self.export_selected_record)
 
     def create_widgets(self):
         # Main container with a sash (PanedWindow) for resizable panels
@@ -52,6 +54,9 @@ class HunkfileViewer:
         self.tree.heading("Details", text="Details")
         self.tree.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
+        # Bind right-click event to show context menu
+        self.tree.bind("<Button-3>", self.show_context_menu)
+
         # Details panel (ScrolledText) within the right panel
         details_frame = tk.Frame(right_panel) # Frame to contain the ScrolledText
         right_panel.add(details_frame) # Add to the PanedWindow
@@ -78,6 +83,48 @@ class HunkfileViewer:
 
         # Bind tree selection event to show_details method
         self.tree.bind("<<TreeviewSelect>>", self.show_details)
+
+
+    def show_context_menu(self, event):
+        """Show context menu on right-click"""
+        item = self.tree.identify_row(event.y)
+        if item:
+            self.tree.selection_set(item)
+            self.context_menu.post(event.x_root, event.y_root)
+
+    def export_selected_record(self):
+        """Export selected record data to a .dat file"""
+        selection = self.tree.selection()
+        if not selection:
+            messagebox.showwarning("Warning", "No record selected for export")
+            return
+            
+        selected_item_iid = selection[0]
+        try:
+            record_index = int(selected_item_iid)
+            _record_size, _record_type, record_data, _record_pos = self.records[record_index]
+        except (ValueError, IndexError):
+            messagebox.showerror("Error", "Could not retrieve record data for export")
+            return
+
+        # Ask user for output file path
+        default_filename = f"record_{record_index:04d}.dat"
+        file_path = filedialog.asksaveasfilename(
+            title="Export Record Data",
+            initialfile=default_filename,
+            filetypes=(("DAT files", "*.dat"), ("All files", "*.*")),
+            defaultextension=".dat"
+        )
+        
+        if not file_path:  # User cancelled
+            return
+            
+        try:
+            with open(file_path, 'wb') as f:
+                f.write(record_data)
+            messagebox.showinfo("Success", f"Record data successfully exported to:\n{file_path}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to export record data:\n{str(e)}")        
 
     def open_file(self):
         file_path = filedialog.askopenfilename(

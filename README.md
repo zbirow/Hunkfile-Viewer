@@ -6,6 +6,7 @@ Hunkfile Viewer (.hnk)
 
 ### Texture Info:
 -Texture information is contained in the Texture Header.
+
 -The first two bytes correspond to the texture formation.
 
 ### Texture Format

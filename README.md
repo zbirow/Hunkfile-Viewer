@@ -8,6 +8,7 @@ Hunkfile Viewer (.hnk)
 
 | Item      | Value PC | Value Wii |
 | --------- | -------- |----------:|
+| File Name | 0x40071 | 0x40071 |
 | ClankBodyTemplate main | 0x45100 |
 | ClankBodyTemplate secondary| 0x402100 |
 | ClankBodyTemplate name | 0x43100 |
@@ -17,8 +18,8 @@ Hunkfile Viewer (.hnk)
 | LiteScript data | 0x4200c |
 | LiteScript data 2 | 0x4100c |
 | SqueakSample data | 0x204090 |
-| TSETexture header | 0x41150 |
-| TSETexture data | 0x40151 |
+| TSETexture header | 0x41150 | 0x41150 |
+| TSETexture data | 0x40151 | 0x202151 |
 | TSETexture data 2 | 0x801151 |
 | RenderModelTemplate header | 0x101050 |
 | RenderModelTemplate data | 0x40054 |

@@ -18,10 +18,12 @@ Hunkfile Viewer (.hnk)
 | 0xF9 0x3D | DXT1 - PC |
 
 ### Width/Height
-| Game | Width | Height |
-| ----- | ----- | ------:|
-| MH PC | 0x0C | 0x0E |
-| MH Wii | 0x0C | 0x0E |
+ - Two bytes 
+| Game | Width | Height | Endian | Exp. bytes | Out |
+| ----- | ----- | ----- | ------ | -------_ | ------:|
+| MH PC | 0x0C | 0x0E | Little Endian | 0x00 0x02 | 512 |
+| MH Wii | 0x0C | 0x0E | Big Endian | 0x02 0x00 | 512 |
+[Tool](https://www.save-editor.com/tools/wse_hex.html "Tool")
 
 
 ### Tables for Monster High

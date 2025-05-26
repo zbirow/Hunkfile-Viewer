@@ -9,8 +9,8 @@ Hunkfile Viewer (.hnk) Torus Games
 
 | Game | Bytes |
 | ---- | -----:|
-| MH PC | 0x00 0x01 0x01 |
-| MH Wii | 0x01 0x00 0x01 |
+| MH PC | 0x01 0x00 0x01 |
+| MH Wii | 0x00 0x01 0x01 |
 
 ### Texture Info:
 -Texture information is contained in the Texture Header [0x41150].

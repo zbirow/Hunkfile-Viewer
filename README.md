@@ -4,9 +4,9 @@ Can dispaly Texture
 In progress.....
 Hunkfile Viewer (.hnk)
 
-### Tables for Monster High NGS PC
+### Tables for Monster High
 
-| Item      | Value |
+| Item      | Value PC | Value Wii |
 | --------- | -----:|
 | ClankBodyTemplate main | 0x45100 |
 | ClankBodyTemplate secondary| 0x402100 |

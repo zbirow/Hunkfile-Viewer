@@ -2,7 +2,7 @@
 Actual tested on Monster High: NGS on PC/Wii
 Can dispaly Texture
 In progress.....
-Hunkfile Viewer (.hnk)
+Hunkfile Viewer (.hnk) Torus Games
 
 ### Texture Info:
 -Texture information is contained in the Texture Header [0x41150].

@@ -19,6 +19,7 @@ Hunkfile Viewer (.hnk)
 
 ### Width/Height
  - Two bytes 
+
 | Game | Width | Height | Endian | Exp. bytes | Out |
 | ----- | ----- | ----- | ------ | -------_ | ------:|
 | MH PC | 0x0C | 0x0E | Little Endian | 0x00 0x02 | 512 |

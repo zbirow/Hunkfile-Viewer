@@ -5,9 +5,10 @@ In progress.....
 Hunkfile Viewer (.hnk)
 
 ### Texture Info:
-Texture information is contained in the Texture Header:
+-Texture information is contained in the Texture Header.
+-The first two bytes correspond to the texture formation.
 
-The first two bytes correspond to the texture formation.
+### Texture Format
 | Two First Bytes | Texture Format |
 | --------------- | --------------:|
 | 0xA1 0xBC | CMPR - Wii |
@@ -15,7 +16,7 @@ The first two bytes correspond to the texture formation.
 | 0xD3 0x3A | DXT5 - PC |
 | 0xF9 0x3D | DXT1 - PC |
 
-# Width/Height
+### Width/Height
 | Game | Width | Height |
 | ----- | ----- | ------:|
 | MH PC | 0x0C | 0x0E |

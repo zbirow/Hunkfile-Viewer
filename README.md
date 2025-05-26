@@ -15,7 +15,7 @@ Hunkfile Viewer (.hnk) Torus Games
 ### Texture Info:
 -Texture information is contained in the Texture Header [0x41150].
 
--The first two bytes correspond to the texture formation.
+-The first two bytes correspond to the texture format.
 
 ### Texture Format
 | Two First Bytes | Texture Format |

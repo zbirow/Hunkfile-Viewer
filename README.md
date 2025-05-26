@@ -68,5 +68,9 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityPlacement level data | 0x102009 |
 | EntityTemplate data | 0x101008 |
 
+# How To Use
+- download repo
+- run hunkfile_viewer.py 
+
 # Credits
 <https://github.com/desuex/hunkfile> - HNK Structure/Table

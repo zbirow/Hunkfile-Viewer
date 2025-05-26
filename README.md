@@ -7,7 +7,7 @@ Hunkfile Viewer (.hnk)
 ### Tables for Monster High
 
 | Item      | Value PC | Value Wii |
-| --------- | -----:|
+| --------- | -------- |----------:|
 | ClankBodyTemplate main | 0x45100 |
 | ClankBodyTemplate secondary| 0x402100 |
 | ClankBodyTemplate name | 0x43100 |

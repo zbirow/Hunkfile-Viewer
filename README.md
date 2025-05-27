@@ -19,6 +19,7 @@ Hunkfile Viewer (.hnk) Torus Games
 | 0xE9 0x78 | Unknown - Wii |
 | 0xD3 0x3A | DXT5 - PC |
 | 0xF9 0x3D | DXT1 - PC |
+| 0x9F 0x5B | R8G8B8A8 - PC |
 
 ### Width/Height
  - Two bytes 

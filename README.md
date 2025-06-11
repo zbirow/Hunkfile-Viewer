@@ -71,13 +71,28 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityTemplate data | 0x101008 |
 
 # Scooby Doo -in progress
+- Texture information is contained in the Texture Header [0x41056].
+### Texture Format
+| 0x34:0x40 | Texture Format |
+| --------------- | --------------:|
+| DXT5 | DXT5 - PC |
+| DXT1 | DXT1 - PC |
+| 0x15 | R8G8B8A8 - PC |
+
+### Width/Height
+ - Two bytes 
+
+| Game | Width | Height | Endian | Exp. bytes | Out |
+| ----- | ----- | ----- | ------ | -------- | ------:|
+| PC | 0x30 | 0x32 | Little Endian | 0x00 0x02 | 512 |
+
 
 ### Tables for Scooby Doo -in progress
-
-
 - File Name 40071
 - texture Header 41056
 - texture data 40057
+
+
 
 # How To Use
 - download repo

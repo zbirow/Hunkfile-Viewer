@@ -70,6 +70,13 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityPlacement level data | 0x102009 |
 | EntityTemplate data | 0x101008 |
 
+#Scooby Doo -in progress
+
+### Tables for Scooby Doo -in progress
+
+
+- File Name 40071
+- texture data 40057
 # How To Use
 - download repo
 - run hunkfile_viewer.py 

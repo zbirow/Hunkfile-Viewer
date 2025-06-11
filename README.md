@@ -7,7 +7,7 @@ In progress.....
 
 Hunkfile Viewer (.hnk) Torus Games
 
-# Monster High: NGS
+# Monster High: NGS / Barbie
 ### Texture Info:
 - Texture information is contained in the Texture Header [0x41150].
 
@@ -70,7 +70,7 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityPlacement level data | 0x102009 |
 | EntityTemplate data | 0x101008 |
 
-#Scooby Doo -in progress
+# Scooby Doo -in progress
 
 ### Tables for Scooby Doo -in progress
 

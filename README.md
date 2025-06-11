@@ -76,7 +76,9 @@ Hunkfile Viewer (.hnk) Torus Games
 
 
 - File Name 40071
+- texture Header 41056
 - texture data 40057
+
 # How To Use
 - download repo
 - run hunkfile_viewer.py 

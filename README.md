@@ -9,7 +9,7 @@ Hunkfile Viewer (.hnk) Torus Games
 
 ### Header Ident.
 
-| 0x5 | Support Games |
+| offset 0x5 | Support Games |
 | --- | ------------- |
 | \x01\x00\x01\x00\x01 | MH(PC), Barbie(PC), Falling Skies(PC) |
 | \xE5\x0A\x01\x00\x01 | MH(PC), Barbie(PC), Falling Skies(PC) |

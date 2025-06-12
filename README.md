@@ -7,6 +7,15 @@ In progress.....
 
 Hunkfile Viewer (.hnk) Torus Games
 
+### Header Ident.
+
+| 0x5 | Support Games |
+| --- | ------------- |
+| \x01\x00\x01\x00\x01 | MH(PC), Barbie(PC), Falling Skies(PC) |
+| \xE5\x0A\x01\x00\x01 | MH(PC), Barbie(PC), Falling Skies(PC) |
+| \x01\x04\x01\x00\x01 | Scooby Doo(PC) |
+| Another | Wii games |
+
 # Monster High: NGS / Barbie / Falling Skies
 ### Texture Info:
 - Texture information is contained in the Texture Header [0x41150].

@@ -34,7 +34,7 @@ Hunkfile Viewer (.hnk) Torus Games
 ### Width/Height
  - Two bytes 
 
-| Game | Width | Height | Endian | Exp. bytes | Out |
+| Game | Width | Height | Endian | Example bytes | Out |
 | ----- | ----- | ----- | ------ | -------- | ------:|
 | PC | 0x0C | 0x0E | Little Endian | 0x00 0x02 | 512 |
 | Wii | 0x0C | 0x0E | Big Endian | 0x02 0x00 | 512 |
@@ -91,7 +91,7 @@ Hunkfile Viewer (.hnk) Torus Games
 ### Width/Height
  - Two bytes 
 
-| Game | Width | Height | Endian | Exp. bytes | Out |
+| Game | Width | Height | Endian | Example bytes | Out |
 | ----- | ----- | ----- | ------ | -------- | ------:|
 | PC | 0x30 | 0x32 | Little Endian | 0x00 0x02 | 512 |
 

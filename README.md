@@ -1,5 +1,5 @@
 # Hunkfile-Viewer
-Actual tested on Monster High: NGS on PC/Wii , Barbie PC
+Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies, Scooby-Doo 1/2
 
 Can dispaly Texture
 
@@ -33,7 +33,7 @@ Hunkfile Viewer (.hnk) Torus Games
 [Tool](https://www.save-editor.com/tools/wse_hex.html "Tool")
 
 
-### Tables for Monster High
+### Tables for Monster High, Barbie, Falling Skies
 
 | Item      | Value PC | Value Wii |
 | --------- | -------- |----------:|

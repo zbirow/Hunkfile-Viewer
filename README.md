@@ -1,5 +1,5 @@
 # Hunkfile-Viewer
-Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies, Scooby-Doo 1/2
+Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies PC, Scooby-Doo 1/2 PC
 
 Can dispaly Texture
 

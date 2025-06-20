@@ -3,7 +3,7 @@ Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies PC, Scoo
 
 Can dispaly Texture
 
-In progress.....
+3D model Viewer in progress.....
 
 Hunkfile Viewer (.hnk) Torus Games
 

@@ -6,18 +6,25 @@ from texture_decoder import TextureDecoder
 
 class WiiTextureDecoder(TextureDecoder):
     def parse_texture_header(self, data):
-        OFFSET_WIDTH = 0x0C
-        OFFSET_HEIGHT = 0x0E
+        OFFSET_WIDTH = 0x58
+        OFFSET_HEIGHT = 0x5A
         HEADER_MIN_LENGTH = 0x16
 
         if len(data) >= HEADER_MIN_LENGTH:
-            magic = data[:2]
-            if magic == b'\xA1\xBC':
-                texture_format = "CRMP"
-            elif magic == b'\xE9\x78':
-                texture_format = "Unknown (but showing as CRMP)"
+            if len(data) >= 0x0A:
+                magic_bytes = data[0x05:0x09] 
+                
+                if magic_bytes == b'\x01\x00\x00\x24':
+                    texture_format = "CRMP"
+                elif magic_bytes == b'\x01\x00\x00\x28':
+                    texture_format = "Unknown"
+                elif magic_bytes ==  b'\x01\x00\x00\x20':
+                    texture_format = "Unknown"
+                else:
+                    texture_format = f"Unknown (magic: {magic_bytes.hex().upper()})"
             else:
-                texture_format = f"Unknown (magic: {magic.hex().upper()})"
+                texture_format = "Unknown (header too short)"
+                
             width = struct.unpack('>H', data[OFFSET_WIDTH:OFFSET_WIDTH+2])[0]
             height = struct.unpack('>H', data[OFFSET_HEIGHT:OFFSET_HEIGHT+2])[0]
             return width, height, texture_format

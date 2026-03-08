@@ -81,26 +81,45 @@ Hunkfile Viewer (.hnk) Torus Games
 
 # Scooby Doo -in progress
 - Texture information is contained in the Texture Header [0x41056].
+- 
 ### Texture Format
+
+PC
 | 0x34:0x40 | Texture Format |
 | --------------- | --------------:|
 | DXT5 | DXT5 - PC |
 | DXT1 | DXT1 - PC |
 | 0x15 | R8G8B8A8 - PC |
 
+
+Wii
+| 0x5:0x9 | Texture Format |
+| --------------- | --------------:|
+| 0x01 0x00 0x00 0x28 | CMPR - Wii |
+| 0x01 0x00 0x00 0x24 | UNK - Wii |
+| 0x01 0x00 0x00 0x20 | UNK - Wii |
+| 0x01 0x00 0x00 0x2C | UNK - Wii |
+| 0x01 0x00 0x00 0x30 | UNK - Wii |
+
+
 ### Width/Height
  - Two bytes 
 
-| Game | Width | Height | Endian | Example bytes | Out |
-| ----- | ----- | ----- | ------ | -------- | ------:|
-| PC | 0x30 | 0x32 | Little Endian | 0x00 0x02 | 512 |
-
+| Game | Width | Height | Endian | Example bytes | Out | Format |
+| ----- | ----- | ----- | ------ | -------- | -------- | ------:|
+| PC | 0x30 | 0x32 | Little Endian | 0x00 0x02 | 512 | All |
+| Wii | 0x58 | 0x5A | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x28 |
+| Wii | 0x5B | 0x5D | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x24 |
+| Wii | 0x53 | 0x55 | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x20 |
+| Wii | 0x60 | 0x62 | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x2C |
+| Wii | 0x63 | 0x65 | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x30 |
 
 ### Tables for Scooby Doo -in progress
-- File Name 40071
-- texture Header 41056
-- texture data 40057
-
+- File Name - 40071
+- texture Header PC - 41056
+- texture Data PC - 40057
+- texture Header Wii - 41033
+- texture Data Wii - 201035
 
 
 # How To Use

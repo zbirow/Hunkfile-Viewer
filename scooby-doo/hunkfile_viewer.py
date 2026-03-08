@@ -203,7 +203,7 @@ class HunkfileViewer:
         self.details.delete(1.0, tk.END)
         self.textures.clear()
         current_texture_id_awaiting_data = None
-
+    
         record_type_names = {
             HUNKFILE_HEADER: "Hunkfile Header",
             FILENAME_HEADER: "Filename Header",
@@ -248,17 +248,32 @@ class HunkfileViewer:
             RENDER_MODEL_TEMPLATE_DATA_TABLE_II_WII: "Render Model Template Data Table 2 (Wii)",
             FILENAME_HEADER_WII: "Filename Header (Wii)",
             TSE_TEXTURE_HEADER_SCOOBY_DOO: "TSE Texture Header (Scooby Doo)",
-            TSE_TEXTURE_DATA_SCOOBY_DOO: "TSE Texture Data (Scooby Doo)"
+            TSE_TEXTURE_DATA_SCOOBY_DOO: "TSE Texture Data (Scooby Doo)",
+            TSE_TEXTURE_HEADER_SCOOBY_DOO_WII: "TSE Texture Header (Scooby Doo) (Wii)",
+            TSE_TEXTURE_DATA_SCOOBY_DOO_WII: "TSE Texture Data (Scooby Doo) (Wii)"
         }
-
+    
+        # Określamy typy nagłówków i danych tekstur w zależności od platformy
+        platform = self.platform_label.cget("text").replace("Platform: ", "")
+        
+        if platform == "PC":
+            texture_header_types = [TSE_TEXTURE_HEADER_SCOOBY_DOO]
+            texture_data_types = [TSE_TEXTURE_DATA_SCOOBY_DOO, TSE_TEXTURE_DATA_2]
+        else:  # Wii
+            texture_header_types = [TSE_TEXTURE_HEADER_SCOOBY_DOO_WII]
+            texture_data_types = [TSE_TEXTURE_DATA_SCOOBY_DOO_WII, TSE_TEXTURE_DATA_2]
+    
         for i, (record_size, record_type, record_data, record_pos) in enumerate(self.records):
             details_summary = record_type_names.get(record_type, f"Unknown (0x{record_type:08X})")
+            
             if record_type == FILENAME_HEADER:
                 folder, filename = self.parse_filename_header(record_data)
                 details_summary = f"File: {filename}"
                 if folder:
                     details_summary += f" (in {folder})"
-            elif record_type == TSE_TEXTURE_HEADER_SCOOBY_DOO:
+            
+            # Obsługa nagłówków tekstur w zależności od platformy
+            elif record_type in texture_header_types:
                 width, height, texture_format = self.texture_decoder.parse_texture_header(record_data)
                 details_summary = f"Texture Header: {width}x{height} ({texture_format})"
                 current_texture_id_awaiting_data = f"texture_{len(self.textures)}"
@@ -270,7 +285,9 @@ class HunkfileViewer:
                     'data': None,
                     'data_pos': None
                 }
-            elif record_type in (TSE_TEXTURE_DATA_SCOOBY_DOO, TSE_TEXTURE_DATA_WII, TSE_TEXTURE_DATA_2):
+            
+            # Obsługa danych tekstur w zależności od platformy
+            elif record_type in texture_data_types:
                 details_summary = "Texture Data"
                 if current_texture_id_awaiting_data and current_texture_id_awaiting_data in self.textures:
                     self.textures[current_texture_id_awaiting_data]['data'] = record_data
@@ -279,7 +296,19 @@ class HunkfileViewer:
                     details_summary += f" ( {tex_info['width']}x{tex_info['height']} {tex_info['format']})"
                     current_texture_id_awaiting_data = None
                 else:
-                    details_summary += " (Orphaned? No preceding header)"
+                    # Próba znalezienia pasującego nagłówka po pozycji
+                    found_match = False
+                    for tex_id, tex_meta in self.textures.items():
+                        if tex_meta['data'] is None and tex_meta['header_pos'] < record_pos:
+                            # Zakładamy, że dane tekstury pojawiają się po nagłówku
+                            self.textures[tex_id]['data'] = record_data
+                            self.textures[tex_id]['data_pos'] = record_pos
+                            details_summary += f" (Matched with header at {tex_meta['header_pos']})"
+                            found_match = True
+                            break
+                    if not found_match:
+                        details_summary += " (Orphaned? No preceding header)"
+            
             self.tree.insert(
                 "", "end", iid=str(i),
                 values=(f"0x{record_type:08X}", f"{record_size} bytes", details_summary),
@@ -298,15 +327,19 @@ class HunkfileViewer:
             self.details.delete(1.0, tk.END)
             self.details.insert(tk.END, "Error: Could not retrieve record details.")
             return
+        
         self.details.delete(1.0, tk.END)
         self.details.insert(tk.END, f"Record Type: 0x{record_type:08X}\n")
         self.details.insert(tk.END, f"Record Size: {_record_size} bytes\n")
         self.details.insert(tk.END, f"Record Position (end in file): {record_pos} bytes\n")
+        
         if record_type == FILENAME_HEADER:
             folder, filename = self.parse_filename_header(record_data)
             self.details.insert(tk.END, f"Parsed Folder: {folder}\n")
             self.details.insert(tk.END, f"Parsed Filename: {filename}\n")
-        elif record_type == TSE_TEXTURE_HEADER_SCOOBY_DOO:
+        
+        # Obsługa nagłówków tekstur dla różnych platform
+        elif record_type in [TSE_TEXTURE_HEADER_SCOOBY_DOO, TSE_TEXTURE_HEADER_SCOOBY_DOO_WII]:
             width, height, texture_format = self.texture_decoder.parse_texture_header(record_data)
             self.details.insert(tk.END, f"Texture Dimensions: {width}x{height}\n")
             self.details.insert(tk.END, f"Detected Format: {texture_format}\n")
@@ -321,7 +354,9 @@ class HunkfileViewer:
                             tex_meta['format']
                         )
                     break
-        elif record_type in (TSE_TEXTURE_DATA_SCOOBY_DOO, TSE_TEXTURE_DATA_WII, TSE_TEXTURE_DATA_2):
+        
+        # Obsługa danych tekstur dla różnych platform
+        elif record_type in [TSE_TEXTURE_DATA_SCOOBY_DOO, TSE_TEXTURE_DATA_SCOOBY_DOO_WII, TSE_TEXTURE_DATA_2]:
             self.details.insert(tk.END, "This is raw texture data.\n")
             found_texture_for_data = False
             for tex_id, tex_meta in self.textures.items():
@@ -341,9 +376,21 @@ class HunkfileViewer:
                         self.canvas.create_text(50,50, text="Texture data available, but metadata (W/H) is invalid or data is missing.", fill="orange")
                     found_texture_for_data = True
                     break
+            
             if not found_texture_for_data:
-                self.canvas.delete("all")
-                self.canvas.create_text(50,50, text="Texture data found, but no associated header information in current parse.", fill="orange")
+                # Próba wyświetlenia tekstury nawet bez znalezionego nagłówka
+                try:
+                    width, height, texture_format = self.texture_decoder.parse_texture_header(record_data)
+                    if width > 0 and height > 0:
+                        self.details.insert(tk.END, f"Attempting to parse as standalone texture: {width}x{height} {texture_format}\n")
+                        self.show_texture(record_data, width, height, texture_format)
+                    else:
+                        self.canvas.delete("all")
+                        self.canvas.create_text(50,50, text="Texture data found, but no associated header information in current parse.", fill="orange")
+                except:
+                    self.canvas.delete("all")
+                    self.canvas.create_text(50,50, text="Texture data found, but no associated header information in current parse.", fill="orange")
+        
         self.details.insert(tk.END, "\nHex Data (first 64 bytes or less):\n")
         max_hex_bytes = min(len(record_data), 64)
         hex_lines = []

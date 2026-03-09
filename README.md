@@ -117,11 +117,11 @@ Wii
 ### Tables for Scooby Doo -in progress
 
 
-| Item      | Value PC | Value Wii |
-| --------- | -------- |----------:|
-| File Name         | 40071 | 40071  |
-| TSETexture header | 41056 | 41033  |
-| TSETexture data   | 40057 | 201035 |
+| Type      | Value PC | Value Wii Spooky Swamp | Value Wii First Frights |
+| --------- | -------- | ---------------------- |----------:|
+| File Name         | 40071 | 40071  |  |
+| TSETexture header | 41056 | 41033  |  |
+| TSETexture data   | 40057 | 201035 |  |
 
 
 # How To Use

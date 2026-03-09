@@ -6,27 +6,51 @@ from texture_decoder import TextureDecoder
 
 class WiiTextureDecoder(TextureDecoder):
     def parse_texture_header(self, data):
-        OFFSET_WIDTH = 0x58
-        OFFSET_HEIGHT = 0x5A
         HEADER_MIN_LENGTH = 0x16
 
         if len(data) >= HEADER_MIN_LENGTH:
             if len(data) >= 0x0A:
-                magic_bytes = data[0x05:0x09] 
+                magic_bytes = data[0x05:0x09]
                 
                 if magic_bytes == b'\x01\x00\x00\x24':
-                    texture_format = "CRMP"
+                    texture_format = "CMPR (0x24)"
+                    width_offset = 0x58
+                    height_offset = 0x5A
                 elif magic_bytes == b'\x01\x00\x00\x28':
-                    texture_format = "Unknown"
-                elif magic_bytes ==  b'\x01\x00\x00\x20':
-                    texture_format = "Unknown"
+                    texture_format = "CMPR (0x28)"
+                    width_offset = 0x5C
+                    height_offset = 0x5E
+                elif magic_bytes == b'\x01\x00\x00\x20':
+                    texture_format = "CMPR (0x20)"
+                    width_offset = 0x54
+                    height_offset = 0x56
+                elif magic_bytes == b'\x01\x00\x00\x2C':
+                    texture_format = "CMPR (0x2C)"
+                    width_offset = 0x60
+                    height_offset = 0x62
+                elif magic_bytes == b'\x01\x00\x00\x30':
+                    texture_format = "CMPR (0x30)"
+                    width_offset = 0x64
+                    height_offset = 0x66
                 else:
                     texture_format = f"Unknown (magic: {magic_bytes.hex().upper()})"
+                    # deafult offset
+                    width_offset = 0x58
+                    height_offset = 0x5A
+                    
+                max_offset = max(width_offset, height_offset) + 2
+                if len(data) >= max_offset:
+                    width = struct.unpack('>H', data[width_offset:width_offset+2])[0]
+                    height = struct.unpack('>H', data[height_offset:height_offset+2])[0]
+                else:
+                    width = 0
+                    height = 0
+                    texture_format += " (header too short for offsets)"
             else:
                 texture_format = "Unknown (header too short)"
-                
-            width = struct.unpack('>H', data[OFFSET_WIDTH:OFFSET_WIDTH+2])[0]
-            height = struct.unpack('>H', data[OFFSET_HEIGHT:OFFSET_HEIGHT+2])[0]
+                width = 0
+                height = 0
+            
             return width, height, texture_format
         return 0, 0, "Unknown"
 

@@ -44,7 +44,7 @@ Hunkfile Viewer (.hnk) Torus Games
 
 ### Tables for Monster High, Barbie, Falling Skies
 
-| Item      | Value PC | Value Wii |
+| Type      | Value PC | Value Wii |
 | --------- | -------- |----------:|
 | File Name | 0x40071 | 0x40071 |
 | ClankBodyTemplate main | 0x45100 |
@@ -115,11 +115,13 @@ Wii
 | Wii | 0x64 | 0x66 | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x30 |
 
 ### Tables for Scooby Doo -in progress
-- File Name - 40071
-- texture Header PC - 41056
-- texture Data PC - 40057
-- texture Header Wii - 41033
-- texture Data Wii - 201035
+
+
+| Item      | Value PC | Value Wii |
+| --------- | -------- |----------:|
+| File Name         | 40071 | 40071  |
+| TSETexture header | 41056 | 41033  |
+| TSETexture data   | 40057 | 201035 |
 
 
 # How To Use

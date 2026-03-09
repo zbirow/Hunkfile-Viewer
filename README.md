@@ -80,7 +80,7 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityTemplate data | 0x101008 |
 
 # Scooby Doo -in progress
-- Texture information is contained in the Texture Header [0x41056].
+- Texture information is contained in the Texture Header PC [0x41056] , Wii [0x41033].
 - 
 ### Texture Format
 
@@ -114,13 +114,46 @@ Wii
 | Wii | 0x60 | 0x62 | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x2C |
 | Wii | 0x64 | 0x66 | Big Endian | 0x00 0x02 | 512 | 0x01 0x00 0x00 0x30 |
 
+
+### Wii First Frights
+
+Format type = 0x18 0x00 0x00 0x00
+offset: 15
+4 bytes
+
+Name count
+offset: 6
+2 bytes
+
+size name block
+offset 9
+2 bytes
+
+after name block
+padding 00 - offset 2A
+2 byte width
+2 byte height
+skip meta - offset 2D
+
+after name block
+padding 00 - offset 2A
+2 byte width
+2 byte height
+skip meta - offset 2D
+
+ect.
+
+block texture data - 0x201034 / 0x201035
+
+
+
 ### Tables for Scooby Doo -in progress
 
 
 | Type      | Value PC | Value Wii Spooky Swamp | Value Wii First Frights |
 | --------- | -------- | ---------------------- |----------:|
-| File Name         | 0x40071 | 0x40071  | 0x40071 |
-| TSETexture header | 0x41056 | 0x41033  | 0x41033 |
+| File Name         | 0x40071 | 0x40071  | 0x40071  |
+| TSETexture header | 0x41056 | 0x41033  | 0x41033  |
 | TSETexture data   | 0x40057 | 0x201035 |  |
 
 

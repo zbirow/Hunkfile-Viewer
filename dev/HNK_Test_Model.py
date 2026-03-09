@@ -133,7 +133,7 @@ def main():
 
     label = tk.Label(
         root,
-        text="HNK Model Extractor\n\nThis tool is incomplete and still in development.\nOnly the second part of the model exports correctly.",
+        text="HNK Model Extractor\n\nThis tool is incomplete and still in development.",
         justify="center"
     )
     label.pack(pady=20)

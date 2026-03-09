@@ -81,16 +81,13 @@ Hunkfile Viewer (.hnk) Torus Games
 
 
 
-### PC model INFO
+## PC 3D Model
 
- Hair:
- VERTEX_SIZE = 44
- UV_OFFSET = 12
+ [3D Model Extractor](https://github.com/zbirow/Hunkfile-Viewer/blob/main/dev/HNK_Test_Model.py)
 
-Head, Skirt, Fingers and wrists
+This is a test script that can extract models from an hnk file. It won't extract all models, so some may be broken.
 
-VERTEX_SIZE = 64
-UV_OFFSET = 12
+Tested on Monster High NGiS PC, it extracts hair, clothing, and game elements without any problems. It has significant issues with characters and some game elements, but I'm still working on it.
  
 
 # Scooby Doo -in progress

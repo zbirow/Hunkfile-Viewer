@@ -79,6 +79,20 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityPlacement level data | 0x102009 |
 | EntityTemplate data | 0x101008 |
 
+
+
+### PC model INFO
+
+ Hair:
+ VERTEX_SIZE = 44
+ UV_OFFSET = 12
+
+Head, Skirt, Fingers and wrists
+
+VERTEX_SIZE = 64
+UV_OFFSET = 12
+ 
+
 # Scooby Doo -in progress
 - Texture information is contained in the Texture Header PC [0x41056] , Wii [0x41033].
 - 

@@ -119,9 +119,9 @@ Wii
 
 | Type      | Value PC | Value Wii Spooky Swamp | Value Wii First Frights |
 | --------- | -------- | ---------------------- |----------:|
-| File Name         | 40071 | 40071  |  |
-| TSETexture header | 41056 | 41033  |  |
-| TSETexture data   | 40057 | 201035 |  |
+| File Name         | 0x40071 | 0x40071  | 0x40071 |
+| TSETexture header | 0x41056 | 0x41033  | 0x41033 |
+| TSETexture data   | 0x40057 | 0x201035 |  |
 
 
 # How To Use

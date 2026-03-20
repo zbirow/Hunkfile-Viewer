@@ -166,6 +166,9 @@ block texture data - 0x201034 / 0x201035
 | File Name         | 0x40071 | 0x40071  | 0x40071  |
 | TSETexture header | 0x41056 | 0x41033  | 0x41033  |
 | TSETexture data   | 0x40057 | 0x201035 |  |
+| RenderModelTemplate header | 0x101050 |
+| RenderModelTemplate data | 0x40054 |
+| RenderModelTemplate data table | 0x20055 |
 
 
 # How To Use

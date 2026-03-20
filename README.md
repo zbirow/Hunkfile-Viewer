@@ -60,8 +60,8 @@ Hunkfile Viewer (.hnk) Torus Games
 | TSETexture data | 0x40151 | 0x202151 |
 | TSETexture data 2 | 0x801151 |
 | RenderModelTemplate header | 0x101050 |
-| RenderModelTemplate data | 0x40054 |
-| RenderModelTemplate data table | 0x20055 |
+| RenderModelTemplate data | 0x40054 | 0x202032 |
+| RenderModelTemplate data table | 0x20055 | 0x202031 |
 | Animation data | 0x42005 |
 | Animation data 2 | 0x41005 |
 | RenderSprite data | 0x41007 |

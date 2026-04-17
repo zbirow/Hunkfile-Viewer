@@ -79,7 +79,53 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityPlacement level data | 0x102009 |
 | EntityTemplate data | 0x101008 |
 
+# 3D Model Extraction Mechanism from HNK Format
 
+`.hnk` files (used in games like *Monster High: New Ghoul in School*) are binary containers storing data records. This script processes these records to reconstruct a complete 3D model in `.obj` format.
+
+## 1. Record Structure
+
+The HNK format is based on data blocks of specific types:
+
+- **Type `0x40054` (Vertex Buffer):** Stores raw vertex data (XYZ positions, UV coordinates, normals).
+- **Type `0x20055` (Index Buffer):** Stores an index array defining how to connect vertices into triangles.
+
+## 2. Challenge: Relative Indexing & Batches
+
+The main difficulty in the HNK format is that the relationship between vertices and indices is not linear (1:1).
+
+- **One large vertex buffer** may contain geometry for several model parts (e.g., head, torso, legs).
+- **Indices inside a single record** do not grow indefinitely. Instead, for each new model part (sub-mesh), indices **reset to zero** (`0, 1, 2...`).
+
+## 3. Reconstruction Algorithm (Step by Step)
+
+### A. Part Detection (Batching)
+
+The script scans index records for so-called **restarts**. Since each new section (e.g., hair after the face) starts indexing from zero, the script looks for sequences returning to low values (e.g., `..., 4881, 4882, 0, 1, 2`). Encountering such a sequence marks the beginning of a new sub-part (Batch).
+
+### B. Dual Offset System (Key to Success)
+
+The OBJ format requires absolute (global) indexing, while HNK uses local indexing. The script applies two levels of offsets:
+
+1.  **Local Block Offset:** Used to navigate inside a single large vertex record. If Part 1 uses 1000 vertices, Part 2 (which starts indexing from 0) must have an offset of `+1000` added to point to the correct data within the same buffer.
+2.  **Global OBJ Offset:** Used to combine multiple HNK records. If the first record (e.g., body) had 5000 vertices, indices from the second record (e.g., hair) must be shifted by `+5000` to point to unique line numbers in the OBJ file.
+
+### C. Vertex Format Detection
+
+HNK files do not have a fixed vertex size. The script dynamically detects the structure size (e.g., 32, 40, or 48 bytes) by analyzing separators and data patterns. This allows correct reading of XYZ positions and texture coordinates (UV) regardless of model complexity.
+
+### D. Topology Building (Triangle List)
+
+For each Batch, the script reads indices in groups of three, creating face definitions in the format:
+`f v1/uv1 v2/uv2 v3/uv3`
+UV coordinates are automatically flipped on the Y-axis (`1.0 - v`), which is standard when converting from Direct3D systems (used by the game) to the OpenGL/OBJ standard.
+
+## 4. Technical Mapping Specification
+
+- **Parser:** `struct.unpack("<H", ...)` for indices (16-bit unsigned short).
+- **Vertex Data:** `struct.unpack("<3f", ...)` for positions (3x 32-bit float).
+- **UV Data:** Offset by a variable `uv_offset` inside the vertex structure.
+- **Part separators:** Pattern `[0, 1]` after values above a certain threshold, or optionally a `0xFFFF` separator.
 
 ## PC 3D Model
 

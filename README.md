@@ -97,13 +97,13 @@ The main difficulty in the HNK format is that the relationship between vertices 
 - **One large vertex buffer** may contain geometry for several model parts (e.g., head, torso, legs).
 - **Indices inside a single record** do not grow indefinitely. Instead, for each new model part (sub-mesh), indices **reset to zero** (`0, 1, 2...`).
 
-## 3. Reconstruction Algorithm (Step by Step)
+## 3. Reconstruction Algorithm
 
 ### A. Part Detection (Batching)
 
 The script scans index records for so-called **restarts**. Since each new section (e.g., hair after the face) starts indexing from zero, the script looks for sequences returning to low values (e.g., `..., 4881, 4882, 0, 1, 2`). Encountering such a sequence marks the beginning of a new sub-part (Batch).
 
-### B. Dual Offset System (Key to Success)
+### B. Dual Offset System
 
 The OBJ format requires absolute (global) indexing, while HNK uses local indexing. The script applies two levels of offsets:
 
@@ -114,7 +114,7 @@ The OBJ format requires absolute (global) indexing, while HNK uses local indexin
 
 HNK files do not have a fixed vertex size. The script dynamically detects the structure size (e.g., 32, 40, or 48 bytes) by analyzing separators and data patterns. This allows correct reading of XYZ positions and texture coordinates (UV) regardless of model complexity.
 
-### D. Topology Building (Triangle List)
+### D. Topology Building
 
 For each Batch, the script reads indices in groups of three, creating face definitions in the format:
 `f v1/uv1 v2/uv2 v3/uv3`

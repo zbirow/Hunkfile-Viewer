@@ -1,9 +1,10 @@
 # Hunkfile-Viewer
 Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies PC, Scooby-Doo 1/2 PC/Wii
 
-Can dispaly Texture
+Dispaly Texture
 
-3D model Viewer in progress.....
+Convert 3D model to OBJ
+
 
 Hunkfile Viewer (.hnk) Torus Games
 

@@ -118,53 +118,88 @@ def extract_indices(data):
 
 
 def export_model(hnk_path):
-
     records = read_hunkfile(hnk_path)
 
-    vertex_records = [data for t, data in records if t == 0x40054]
-    index_records = [data for t, data in records if t == 0x20055]
+    v_raw_records = [data for t, data in records if t == 0x40054]
+    i_raw_records = [data for t, data in records if t == 0x20055]
 
-    output_dir = os.path.dirname(hnk_path)
+    all_v = []
+    all_uv = []
+    all_f = []
+    global_obj_v_offset = 0
 
-    for mesh_idx, (vertex_data, index_data) in enumerate(zip(vertex_records, index_records)):
+    # Iterujemy po parach Rekord Wierzchołków <-> Rekord Indeksów
+    for block_idx in range(min(len(v_raw_records), len(i_raw_records))):
+        v_data = v_raw_records[block_idx]
+        i_data = i_raw_records[block_idx]
 
-        vertex_size = detect_vertex_size(vertex_data)
-        uv_offset = detect_uv_offset(vertex_size)
+        # 1. Wyciągamy WSZYSTKIE wierzchołki z tego dużego bloku
+        v_size = detect_vertex_size(v_data)
+        uv_off = detect_uv_offset(v_size)
+        full_v_list, full_uv_list = extract_vertices(v_data, v_size, uv_off)
 
-        print("Mesh", mesh_idx + 1)
-        print("Detected vertex size:", vertex_size)
-        print("Detected UV offset:", uv_offset)
+        # 2. Dekodujemy indeksy i szukamy restartów (batchy)
+        indices = []
+        for i in range(0, len(i_data) - 1, 2):
+            indices.append(struct.unpack("<H", i_data[i:i+2])[0])
 
-        vertices, uvs = extract_vertices(vertex_data, vertex_size, uv_offset)
-        indices = extract_indices(index_data)
+        batches = []
+        current_batch = []
+        for i in range(len(indices)):
+            # Wykrywanie restartu indeksu do 0 (nowa pod-część w tym samym bloku)
+            if i > 2 and indices[i] == 0 and indices[i+1] == 1:
+                if current_batch:
+                    batches.append(current_batch)
+                    current_batch = []
+            current_batch.append(indices[i])
+        if current_batch:
+            batches.append(current_batch)
 
-        if not indices:
-            continue
+        print(f"Blok {block_idx+1}: Znaleziono {len(batches)} pod-części wewnątrz {len(full_v_list)} wierzchołków.")
 
-        out_file = os.path.join(output_dir, f"mesh_{mesh_idx+1}.obj")
+        # 3. Przypisujemy każdą pod-część indeksów do odpowiedniego fragmentu wierzchołków
+        local_block_offset = 0
+        for b_idx, batch in enumerate(batches):
+            max_idx_in_batch = max(batch)
+            
+            # Budujemy trójkąty
+            for j in range(0, len(batch) - 2, 3):
+                a, b, c = batch[j], batch[j+1], batch[j+2]
+                
+                # Klucz: Indeks globalny w OBJ to:
+                # indeks_w_batchu + offset_w_obecnym_bloku + całkowity_offset_obj
+                all_f.append((
+                    a + 1 + local_block_offset + global_obj_v_offset,
+                    b + 1 + local_block_offset + global_obj_v_offset,
+                    c + 1 + local_block_offset + global_obj_v_offset
+                ))
+            
+            # Po każdej pod-części zwiększamy lokalny offset o liczbę zużytych wierzchołków
+            # Zazwyczaj jest to max_index + 1
+            local_block_offset += (max_idx_in_batch + 1)
 
-        with open(out_file, "w") as f:
+        # Na koniec dodajemy wszystkie wierzchołki z tego bloku do listy globalnej
+        all_v.extend(full_v_list)
+        all_uv.extend(full_uv_list)
+        global_obj_v_offset += len(full_v_list)
 
-            f.write(f"o Mesh_{mesh_idx+1}\n")
+    save_obj_final(hnk_path, all_v, all_uv, all_f)
 
-            for v in vertices:
-                f.write(f"v {v[0]:.6f} {v[1]:.6f} {v[2]:.6f}\n")
-
-            for uv in uvs:
-                f.write(f"vt {uv[0]:.6f} {uv[1]:.6f}\n")
-
-            for i in range(0, len(indices)-2, 3):
-
-                a = indices[i]
-                b = indices[i+1]
-                c = indices[i+2]
-
-                if a < len(vertices) and b < len(vertices) and c < len(vertices):
-
-                    f.write(f"f {a+1}/{a+1} {b+1}/{b+1} {c+1}/{c+1}\n")
-
-        print("Saved:", out_file)
-
+def save_obj_final(path, verts, uvs, faces):
+    out_path = path.replace(".hnk", "_complete.obj")
+    with open(out_path, "w") as f:
+        f.write("# HNK Reconstructed Model\n")
+        # Zapisz wszystkie wierzchołki
+        for v in verts:
+            f.write(f"v {v[0]:.6f} {v[1]:.6f} {v[2]:.6f}\n")
+        # Zapisz wszystkie UV
+        for uv in uvs:
+            f.write(f"vt {uv[0]:.6f} {uv[1]:.6f}\n")
+        # Zapisz wszystkie trójkąty
+        for face in faces:
+            # v1/uv1 v2/uv2 v3/uv3
+            f.write(f"f {face[0]}/{face[0]} {face[1]}/{face[1]} {face[2]}/{face[2]}\n")
+    print(f"Model zapisany poprawnie: {out_path}")
 
 def select_file():
 

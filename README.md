@@ -79,7 +79,7 @@ Hunkfile Viewer (.hnk) Torus Games
 | EntityPlacement level data | 0x102009 |
 | EntityTemplate data | 0x101008 |
 
-# 3D Model Extraction Mechanism from HNK Format
+# 3D Model Extraction Mechanism from HNK Format PC
 
 `.hnk` files (used in games like *Monster High: New Ghoul in School*) are binary containers storing data records. This script processes these records to reconstruct a complete 3D model in `.obj` format.
 

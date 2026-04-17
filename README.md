@@ -85,9 +85,8 @@ Hunkfile Viewer (.hnk) Torus Games
 
  [3D Model Extractor](https://github.com/zbirow/Hunkfile-Viewer/blob/main/dev/HNK_Test_Model.py)
 
-This is a test script that can extract models from an hnk file. It won't extract all models, so some may be broken.
 
-Tested on Monster High NGiS PC, Barbie PC, Scooby Doo 1/2 PC, it extracts hair, clothing, and game elements without any problems. It has significant issues with characters and some game elements, but I'm still working on it.
+Tested on Monster High NGiS PC, Barbie PC, Scooby Doo 1/2 PC.
  
 
 # Scooby Doo -in progress

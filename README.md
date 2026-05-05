@@ -7,9 +7,14 @@ Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies PC, Scoo
 
 * Convert 3D model to OBJ
 
-* Spritr Viever
+* Sprite Viever
 
 * Sound converter
+
+### In progres
+
+* model skeleton
+* animations
 
 ### Header Ident.
 

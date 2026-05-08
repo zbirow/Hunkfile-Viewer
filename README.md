@@ -11,9 +11,10 @@ Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies PC, Scoo
 
 * Sound converter
 
+* model skeleton
+
 ### In progres
 
-* model skeleton
 * animations
 
 ### Header Ident.

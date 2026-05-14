@@ -5,7 +5,7 @@ Actual tested on Monster High: NGS on PC/Wii , Barbie PC, Falling Skies PC, Scoo
 
 #----These functions are in separate scripts. They will be supported in the new program.--#
 
-* Convert 3D model to OBJ
+* Convert 3D model to OBJ (UV is repair, and add parts in obj model)
 
 * Sprite Viever
 

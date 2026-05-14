@@ -268,7 +268,7 @@ def main():
     split_var = tk.BooleanVar(value=False)
     chk_btn = tk.Checkbutton(
         root, 
-        text="Export all submodels", 
+        text="Export all submesh", 
         variable=split_var,
         justify="left"
     )
